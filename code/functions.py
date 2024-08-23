@@ -32,7 +32,7 @@ class ProccesorMercaData:
                     })
             
             df = pd.DataFrame(categories)
-            df.to_csv('data/categories.csv', index=False)
+            df.to_csv('/root/MercaBot/data/categories.csv', index=False)
             print('Categorias almacenadas correctamente')
 
         else:
@@ -41,7 +41,7 @@ class ProccesorMercaData:
 
     def fetch_and_store_products(self):
         
-        df = pd.read_csv('data/categories.csv')
+        df = pd.read_csv('/root/MercaBot/data/categories.csv')
         categories_id = df['category_id'].unique().tolist()
 
         products = []
@@ -93,7 +93,7 @@ class ProccesorMercaData:
             print(f'Error en la solicitud GET: {response.status_code}')
 
         df = pd.DataFrame(products)
-        df.to_csv('data/products.csv', index=False)
+        df.to_csv('/root/MercaBot/data/products.csv', index=False)
         print('Productos añadidos correctamente')
 
 
@@ -102,14 +102,14 @@ class ProccesorMercaData:
         
         date = datetime.now().strftime('%d%m%Y')
 
-        categories = pd.read_csv('data/categories.csv')
-        products = pd.read_csv('data/products.csv')
+        categories = pd.read_csv('/root/MercaBot/data/categories.csv')
+        products = pd.read_csv('/root/MercaBot/data/products.csv')
 
         df = pd.merge(products, categories, on='category_id', how='inner')
-        df.to_parquet(f'data/precios_{date}.parquet')
+        df.to_parquet(f'/root/MercaBot/data/precios_{date}.parquet')
         try:
-            os.remove('data/categories.csv')
-            os.remove('data/products.csv')
+            os.remove('/root/MercaBot/data/categories.csv')
+            os.remove('/root/MercaBot/data/products.csv')
 
         except FileNotFoundError as e:
             print(f"Error al intentar eliminar los archivos: {e}")
